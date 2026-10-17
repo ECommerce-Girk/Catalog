@@ -14,4 +14,18 @@ public class ProductsController : ControllerBase
         var record = await cmd.Execute(request, ct);
         return Created("/products/" + record.Id, record);
     }
+    
+    [HttpGet("/products/{id:guid}")]
+    public async Task<IActionResult> GetProduct(
+        Guid id,
+        [FromServices] IProductRepository repository,
+        CancellationToken ct)
+    {
+        var product = await repository.GetById(id, ct);
+        
+        if (product is null)
+            return NotFound();
+            
+        return Ok(product);
+    }
 }
