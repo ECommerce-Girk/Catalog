@@ -35,6 +35,7 @@ services.AddScoped<IUnitOfWork, CatalogDbContext>();
 
 services.AddScoped<CreateProduct>();
 services.AddScoped<IProductRepository, ProductRepository>();
+services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 

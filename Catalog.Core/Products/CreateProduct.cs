@@ -2,17 +2,16 @@ using Base;
 
 namespace Catalog.Core.Products;
 
-public class CreateProduct
+public class CreateProductModel
 {
-    private readonly IProductRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
-    
-    public CreateProduct(IProductRepository repository, IUnitOfWork unitOfWork)
-    {
-        _repository = repository;
-        _unitOfWork = unitOfWork;
-    }
-    
+    public required string Name { get; set; }
+    public required string Description { get; set; }
+    public required decimal Price { get; set; }
+    public required int StockQuantity { get; set; }
+}
+
+public class CreateProduct(IUnitOfWork _uow)
+{
     public async Task<Product> Execute(CreateProductModel request, CancellationToken ct)
     {
         var product = new Product
@@ -23,8 +22,8 @@ public class CreateProduct
             StockQuantity = request.StockQuantity
         };
         
-        _unitOfWork.Add(product);
-        await _unitOfWork.SaveChangesAsync(ct);
+        _uow.Add(product);
+        await _uow.SaveChangesAsync(ct);
         
         return product;
     }
